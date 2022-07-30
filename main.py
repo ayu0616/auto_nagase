@@ -21,11 +21,20 @@ url = "https://production-apprunner-api.toshin-correction.com/sheets/assigned?"
 res = requests.get(url, headers=headers)
 tasks = res.json()
 
-if tasks:
-    smtpobj = Mail("smtp.gmail.com", 587)
-    if type(GMAIL_ADDRESS) != str or type(GMAIL_PASSWORD) != str or type(ICLOUD_ADDRESS) != str:
-        raise Exception("メールアドレスかパスワードが見つかりませんでした")
-    smtpobj.login(GMAIL_ADDRESS, GMAIL_PASSWORD)
-    msg = MailText(str(tasks))
-    smtpobj.sendmail(GMAIL_ADDRESS, ICLOUD_ADDRESS, msg.as_string())
-    smtpobj.close()
+if not tasks:
+    exit()
+
+is_finished = True
+for task in tasks:
+    is_finished = is_finished and task["uploaded"]
+
+if is_finished:
+    exit()
+
+smtpobj = Mail("smtp.gmail.com", 587)
+if type(GMAIL_ADDRESS) != str or type(GMAIL_PASSWORD) != str or type(ICLOUD_ADDRESS) != str:
+    raise Exception("メールアドレスかパスワードが見つかりませんでした")
+smtpobj.login(GMAIL_ADDRESS, GMAIL_PASSWORD)
+msg = MailText(str(tasks))
+smtpobj.sendmail(GMAIL_ADDRESS, ICLOUD_ADDRESS, msg.as_string())
+smtpobj.close()
