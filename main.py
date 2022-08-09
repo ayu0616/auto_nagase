@@ -1,25 +1,9 @@
-import chromedriver_binary  # noqa
-from time import sleep
-import requests
-from mail import Mail, MailText
-from nagase_driver import NagaseDriver
+from get_tasks import get_tasks, get_token
 from settings import GMAIL_ADDRESS, GMAIL_PASSWORD, ICLOUD_ADDRESS
+from mail import Mail, MailText
 
-driver = NagaseDriver()
-driver.login()
-nagase_token = driver.execute_script("return localStorage.getItem('CognitoIdentityServiceProvider.5c61idqvmdv797l9t913d1l1td.team169.idToken')")
-while not nagase_token:
-    sleep(1)
-    nagase_token = driver.execute_script("return localStorage.getItem('CognitoIdentityServiceProvider.5c61idqvmdv797l9t913d1l1td.team169.idToken')")
-driver.quit()
-
-headers = {
-    "Authorization": f"Bearer {nagase_token}",
-}
-
-url = "https://production-apprunner-api.toshin-correction.com/sheets/assigned?"
-res = requests.get(url, headers=headers)
-tasks = res.json()
+nagase_token = get_token()
+tasks = get_tasks(nagase_token)
 
 if not tasks:
     exit()
