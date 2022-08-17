@@ -2,6 +2,7 @@ from typing import Any
 import chromedriver_binary  # noqa
 from time import sleep
 import requests
+from TaskItem import TaskItem
 from nagase_driver import NagaseDriver
 
 
@@ -23,5 +24,5 @@ def get_tasks(token: str):
 
     url = "https://production-apprunner-api.toshin-correction.com/sheets/assigned?"
     res = requests.get(url, headers=headers)
-    tasks: dict[str, Any] = res.json()
+    tasks: list[TaskItem] = res.json()
     return tasks
