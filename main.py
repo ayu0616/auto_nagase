@@ -18,7 +18,8 @@ is_finished = len(not_finished_tasks) == 0
 if is_finished:
     exit()
 
-mail_text = "\n".join([*map(lambda x: f'{x["outline"]}：{x["file_name"]}', not_finished_tasks)])
+mail_text = f"あと{len(not_finished_tasks)}件\n\n"
+mail_text += "\n".join([*map(lambda x: f'{x["outline"]}：{x["file_name"]}', not_finished_tasks)])
 
 smtpobj = Mail("smtp.gmail.com", 587)
 if type(GMAIL_ADDRESS) != str or type(GMAIL_PASSWORD) != str or type(ICLOUD_ADDRESS) != str:
