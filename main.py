@@ -1,3 +1,4 @@
+from discord import send_to_discord
 from get_tasks import get_tasks, get_token
 from settings import GMAIL_ADDRESS, GMAIL_PASSWORD, ICLOUD_ADDRESS
 from mail import Mail, MailText
@@ -20,11 +21,19 @@ if is_finished:
 
 mail_text = f"あと{len(not_finished_tasks)}件\n\n"
 mail_text += "\n".join([*map(lambda x: f'{x["outline"]}：{x["file_name"]}', not_finished_tasks)])
+mail_text += "\n\nICE：https://www.toshin-correction.com/correction"
+mail_text += "\n採点マクロ：https://tensaku.toshin-correction.com/home"
 
-smtpobj = Mail("smtp.gmail.com", 587)
-if type(GMAIL_ADDRESS) != str or type(GMAIL_PASSWORD) != str or type(ICLOUD_ADDRESS) != str:
-    raise Exception("メールアドレスかパスワードが見つかりませんでした")
-smtpobj.login(GMAIL_ADDRESS, GMAIL_PASSWORD)
-msg = MailText(mail_text)
-smtpobj.sendmail(GMAIL_ADDRESS, ICLOUD_ADDRESS, msg.as_string())
-smtpobj.close()
+
+# メールで送信
+# smtpobj = Mail("smtp.gmail.com", 587)
+# if type(GMAIL_ADDRESS) != str or type(GMAIL_PASSWORD) != str or type(ICLOUD_ADDRESS) != str:
+#     raise Exception("メールアドレスかパスワードが見つかりませんでした")
+# smtpobj.login(GMAIL_ADDRESS, GMAIL_PASSWORD)
+# msg = MailText(mail_text)
+# smtpobj.sendmail(GMAIL_ADDRESS, ICLOUD_ADDRESS, msg.as_string())
+# smtpobj.close()
+
+
+# DISCORDで送信
+send_to_discord(mail_text)
