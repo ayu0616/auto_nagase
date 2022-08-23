@@ -20,8 +20,8 @@ if is_finished:
     exit()
 
 mail_text = f"あと{len(not_finished_tasks)}件\n\n"
-mail_text += "\n".join([*map(lambda x: f'{x["outline"]}：{x["file_name"]}', not_finished_tasks)])
-mail_text += "\n\nICE：https://www.toshin-correction.com/correction"
+# mail_text += "\n".join([*map(lambda x: f'{x["outline"]}：{x["file_name"]}', not_finished_tasks)])
+mail_text += "ICE：https://www.toshin-correction.com/correction"
 mail_text += "\n採点マクロ：https://tensaku.toshin-correction.com/home"
 
 
